@@ -18,7 +18,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: built-jar
-          path: /
 
       - name: List downloaded files
         run: ls -al jars/
