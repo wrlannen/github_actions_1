@@ -5,19 +5,24 @@ on:
     workflows: ["Java CI with Maven"]
     types:
       - completed
-
 jobs:
-  use-jar:
+  get-latest-release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Fetch Latest Release
+        id: fetch_release
+        run: |
+          latest_release=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest)
+          echo "Latest release info: $latest_release"
+          release_tag=$(echo $latest_release | jq -r .tag_name)
+          echo "RELEASE_TAG=$release_tag" >> $GITHUB_ENV
 
-      - name: Download JAR artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: built-jar
+      - name: Use Latest Release Tag
+        run: |
+          echo "The latest release tag is $RELEASE_TAG"
+          # Perform actions with the release tag here, e.g., download assets, etc.
+          
 
       - name: List downloaded files
-        run: ls -al jars/
+        run: ls -al ~
