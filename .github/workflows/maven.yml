@@ -10,18 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Fetch Latest Release
-        id: fetch_release
-        run: |
-          latest_release=$(curl -s https://api.github.com/repos/wrlannen/github_actions_1/releases/latest)
-          echo "Latest release info: $latest_release"
-          release_tag=$(echo $latest_release | jq -r .tag_name)
-          echo "RELEASE_TAG=$release_tag" >> $GITHUB_ENV
+      - name: Download Release Asset
+        uses: gh-action-download-release@v1
+        with:
+          repository: ${{ github.repository }}
+          tag: latest
+          asset_name: demo-0.0.1-SNAPSHOT.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Use Latest Release Tag
+      - name: Use Downloaded Asset
         run: |
-          echo "The latest release tag is $RELEASE_TAG"
-          # Perform actions with the release tag here, e.g., download assets, etc.
+          ls -l your-jar-file.jar
+          # Perform actions with the downloaded JAR file here
           
 
       - name: List downloaded files
