@@ -13,7 +13,7 @@ jobs:
       - name: Fetch Latest Release
         id: fetch_release
         run: |
-          latest_release=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest)
+          latest_release=$(curl -s https://api.github.com/repos/github_actions_1/releases/latest)
           echo "Latest release info: $latest_release"
           release_tag=$(echo $latest_release | jq -r .tag_name)
           echo "RELEASE_TAG=$release_tag" >> $GITHUB_ENV
